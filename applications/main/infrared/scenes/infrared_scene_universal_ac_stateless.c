@@ -2,16 +2,17 @@
 
 #include "common/infrared_scene_universal_common.h"
 
-void infrared_scene_universal_ac_on_enter(void* context) {
+void infrared_scene_universal_ac_stateless_on_enter(void* context) {
     infrared_scene_universal_common_on_enter(context);
 
     Infrared* infrared = context;
     ButtonPanel* button_panel = infrared->button_panel;
     InfraredBruteForce* brute_force = infrared->brute_force;
 
-    infrared_brute_force_set_db_filename(brute_force, EXT_PATH("infrared/assets/ac.ir"));
+    infrared_brute_force_set_db_filename(brute_force, EXT_PATH("infrared/assets/ac_stateless.ir"));
 
     //TODO Improve A/C universal remote
+    //https://github.com/flipperdevices/flipperzero-firmware/pull/1725/files
     button_panel_reserve(button_panel, 2, 3);
     uint32_t i = 0;
     button_panel_add_item(
@@ -104,10 +105,10 @@ void infrared_scene_universal_ac_on_enter(void* context) {
     }
 }
 
-bool infrared_scene_universal_ac_on_event(void* context, SceneManagerEvent event) {
+bool infrared_scene_universal_ac_stateless_on_event(void* context, SceneManagerEvent event) {
     return infrared_scene_universal_common_on_event(context, event);
 }
 
-void infrared_scene_universal_ac_on_exit(void* context) {
+void infrared_scene_universal_ac_stateless_on_exit(void* context) {
     infrared_scene_universal_common_on_exit(context);
 }

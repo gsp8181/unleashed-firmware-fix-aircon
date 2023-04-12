@@ -5,7 +5,8 @@ typedef enum {
     SubmenuIndexUniversalAudio,
     SubmenuIndexUniversalProjector,
     SubmenuIndexUniversalFan,
-    SubmenuIndexUniversalAirConditioner,
+    SubmenuIndexUniversalAirConditionerStateful,
+    SubmenuIndexUniversalAirConditionerStateless
 } SubmenuIndex;
 
 static void infrared_scene_universal_submenu_callback(void* context, uint32_t index) {
@@ -47,8 +48,15 @@ void infrared_scene_universal_on_enter(void* context) {
 
     submenu_add_item(
         submenu,
-        "ACs",
-        SubmenuIndexUniversalAirConditioner,
+        "Stateful ACs",
+        SubmenuIndexUniversalAirConditionerStateful,
+        infrared_scene_universal_submenu_callback,
+        context);
+
+    submenu_add_item(
+        submenu,
+        "Stateless ACs",
+        SubmenuIndexUniversalAirConditionerStateless,
         infrared_scene_universal_submenu_callback,
         context);
 
@@ -76,12 +84,16 @@ bool infrared_scene_universal_on_event(void* context, SceneManagerEvent event) {
         } else if(event.event == SubmenuIndexUniversalFan) {
             scene_manager_next_scene(scene_manager, InfraredSceneUniversalFan);
             consumed = true;
-        } else if(event.event == SubmenuIndexUniversalAirConditioner) {
-            scene_manager_next_scene(scene_manager, InfraredSceneUniversalAC);
+        } else if(event.event == SubmenuIndexUniversalAirConditionerStateful) {
+            scene_manager_next_scene(scene_manager, InfraredSceneUniversalACStateful);
             consumed = true;
         }
-        scene_manager_set_scene_state(scene_manager, InfraredSceneUniversal, event.event);
-    }
+        } else if(event.event == SubmenuIndexUniversalAirConditionerStateless) {
+            scene_manager_next_scene(scene_manager, InfraredSceneUniversalACStateless);
+            consumed = true;
+        }
+    scene_manager_set_scene_state(scene_manager, InfraredSceneUniversal, event.event);
+    
 
     return consumed;
 }
